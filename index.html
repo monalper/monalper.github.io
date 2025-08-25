@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenDot Art</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="app-header">
+        <h1>OpenDot Art</h1>
+        <p></p>
+    </header>
+
+    <main class="container">
+        <section class="card controls">
+            <div class="control-group">
+                <label for="fileInput" class="button">Görsel Seç</label>
+                <input id="fileInput" type="file" accept="image/*">
+            </div>
+
+            <div class="control-grid">
+                <div class="control">
+                    <label for="maxWidth">Çıkış genişliği (sütun)</label>
+                    <input id="maxWidth" type="range" min="40" max="400" value="120">
+                    <div class="value" id="maxWidthValue">120</div>
+                </div>
+
+                <div class="control">
+                    <label for="charset">Karakter seti</label>
+                    <select id="charset">
+                        <option value="@%#*+=-:. ">@%#*+=-:. (Koyu → Açık)</option>
+                        <option value="Ñ@#W$9876543210?!abc;:+=-,._ ">Yoğun</option>
+                        <option value="#WXVTIti+=;:,. ">Dengeli</option>
+                        <option value="█▓▒░ .">Blok</option>
+                        <option value=" .:-=+*#%@">Ters (Açık → Koyu)</option>
+                    </select>
+                </div>
+
+                <div class="control">
+                    <label for="scaleY">Dikey ölçek</label>
+                    <input id="scaleY" type="range" min="1.5" max="3" step="0.1" value="2">
+                    <div class="value" id="scaleYValue">2.0</div>
+                </div>
+
+                <div class="control">
+                    <label for="contrast">Kontrast</label>
+                    <input id="contrast" type="range" min="-100" max="100" value="0">
+                    <div class="value" id="contrastValue">0</div>
+                </div>
+
+                <div class="control">
+                    <label for="brightness">Parlaklık</label>
+                    <input id="brightness" type="range" min="-100" max="100" value="0">
+                    <div class="value" id="brightnessValue">0</div>
+                </div>
+
+                <div class="control switch">
+                    <label class="switch-label">
+                        <input id="invert" type="checkbox">
+                        <span class="slider"></span>
+                        <span class="switch-text">Ters çevir (negatif)</span>
+                    </label>
+                </div>
+
+                
+
+                <div class="control switch">
+                    <label class="switch-label">
+                        <input id="colored" type="checkbox">
+                        <span class="slider"></span>
+                        <span class="switch-text">Renkli</span>
+                    </label>
+                </div>
+
+                <div class="control switch">
+                    <label class="switch-label">
+                        <input id="dither" type="checkbox">
+                        <span class="slider"></span>
+                        <span class="switch-text">Dithering</span>
+                    </label>
+                </div>
+
+                <div class="control">
+                    <label for="fontSize">Yazı boyutu (px)</label>
+                    <input id="fontSize" type="range" min="8" max="18" value="10">
+                    <div class="value" id="fontSizeValue">10</div>
+                </div>
+
+                <div class="control">
+                    <label for="lineHeight">Satır aralığı</label>
+                    <input id="lineHeight" type="range" min="0.8" max="1.6" step="0.05" value="1.0">
+                    <div class="value" id="lineHeightValue">1.0</div>
+                </div>
+
+                <div class="control">
+                    <label for="letterSpacing">Harf aralığı (px)</label>
+                    <input id="letterSpacing" type="range" min="-1" max="2" step="0.1" value="0">
+                    <div class="value" id="letterSpacingValue">0</div>
+                </div>
+
+                <div class="control">
+                    <label for="customCharset">Özel karakter seti</label>
+                    <input id="customCharset" type="text" placeholder="Örn: '@%#*+=-:. '" value="">
+                    <label class="switch-label" style="margin-top:8px;">
+                        <input id="useCustomCharset" type="checkbox">
+                        <span class="slider"></span>
+                        <span class="switch-text">Özel seti kullan</span>
+                    </label>
+                </div>
+
+                <div class="control switch">
+                    <label class="switch-label">
+                        <input id="smoothing" type="checkbox" checked>
+                        <span class="slider"></span>
+                        <span class="switch-text">Yumuşatma (resampling)</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="action-row">
+                <button id="btnRender" class="button primary" disabled>Oluştur</button>
+                <button id="btnCopy" class="button" disabled>Kopyala</button>
+                <button id="btnDownload" class="button" disabled>TXT İndir</button>
+                <button id="btnDownloadPng" class="button" disabled>PNG İndir</button>
+                <label class="switch-label" style="margin-left:auto;">
+                    <input id="pngTransparent" type="checkbox">
+                    <span class="slider"></span>
+                    <span class="switch-text">PNG arka planı şeffaf</span>
+                </label>
+            </div>
+
+            <div class="dropzone" id="dropzone" aria-label="Sürükle ve bırak alanı">
+                Görseli buraya sürükleyip bırakın
+            </div>
+        </section>
+
+        <section class="card output">
+            <div class="preview-wrap">
+                <img id="preview" alt="Önizleme" class="preview" />
+            </div>
+            <pre id="asciiOut" class="ascii" aria-label="ASCII çıktı"></pre>
+        </section>
+
+        <canvas id="canvas" class="hidden"></canvas>
+    </main>
+
+    <footer class="app-footer">
+        <span>© 2025 OpenDot Converter</span>
+        <a href="https://github.com" target="_blank" rel="noreferrer">Kaynak Kodu</a>
+    </footer>
+
+    <script src="script.js"></script>
+    <noscript>Bu uygulama JavaScript gerektirir.</noscript>
+</body>
+<!--
+Kullanım ipuçları:
+- Dikey ölçek, fontların en-boy oranını telafi eder (yaklaşık 2.0 iyi bir başlangıçtır).
+- Kontrast ile gölgeleri güçlendirebilir veya yumuşatabilirsiniz.
+- Koyu temada daha açık karakter setleri genelde daha okunaklıdır.
+-->
+</html>
+
+
